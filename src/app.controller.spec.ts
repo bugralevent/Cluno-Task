@@ -111,7 +111,7 @@ describe('AppController', () => {
       const response = await appController.details(id);
       expect(response.visible).toBe(true);
       done();
-    })
-
+    });
   });
+  afterAll(() => setTimeout(() => process.exit(), 1000));
 });
