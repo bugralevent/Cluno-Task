@@ -1,3 +1,4 @@
+![](https://github.com/bugralevent/Cluno-Task/workflows/Node%20CI/badge.svg)
 # Description
 
 [Github](https://github.com/bugralevent/cluno-task) Cluno-task repository.
