@@ -4,14 +4,14 @@
 [Github](https://github.com/bugralevent/cluno-task) Cluno-task repository.
 ## Libraries
 #### This project uses NestJS, ExpressJS and Mongoose libraries.
-###### There are two options to store the data, in memory or MongoDB. (Default = In Memory)
-###### In order to run it with MongoDB, you have to pass DB_ADAPTER environment variable as `mongodb`.
-###### Default web server port is 3000. Can be changed with PORT environment variable.
+There are two options to store the data, in memory or MongoDB. (Default = In Memory)
+In order to run it with MongoDB, you have to pass DB_ADAPTER environment variable as `mongodb`.
+Default web server port is `3000`. Can be changed with PORT environment variable.
 ##### Adapters
 There are 2 data adapters in this project, in memory and MongoDB. In memory is written for more performance tried to avoid cpu intensive loops, mostly with `O(n)` time complexity loops but sacrifices memory by creating indexes.
-###### Postman Collection
+##### Postman Collection
 There is an exported Postman Collection with all possible requests.
-###### Tests
+##### Tests
 Tests are written with Jest, with all possible cases with pricing sort and visible controls.
 
 ## List Offers (Port = 3000)
