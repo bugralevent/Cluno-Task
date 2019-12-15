@@ -25,7 +25,8 @@
     "@nestjs/mongoose": "^6.1.2",
     "@nestjs/platform-express": "^6.8.0",
     "mongoose": "^5.8.1",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^6.9.1",
