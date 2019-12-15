@@ -1,0 +1,392 @@
+{
+	"info": {
+		"_postman_id": "8566840a-2083-4f55-bbbe-3404f509b061",
+		"name": "Cluno-Task",
+		"description": "Cluno assignment rest API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List All Offers",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/listOffers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"listOffers"
+					]
+				},
+				"description": "Lists all visible offers"
+			},
+			"response": []
+		},
+		{
+			"name": "List All Offers by Portfolio",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"portfolio\": \"0001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/listOffers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"listOffers"
+					]
+				},
+				"description": "List all offers by portolio parameter"
+			},
+			"response": []
+		},
+		{
+			"name": "List All Offers by Portfolio and Single Make",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"portfolio\": \"0001\",\n\t\"make\": [\"BMW\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/listOffers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"listOffers"
+					]
+				},
+				"description": "List all portfolio by portfolio and single make"
+			},
+			"response": []
+		},
+		{
+			"name": "List All Offers by Portfolio and Multiple Make",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"portfolio\": \"0001\",\n\t\"make\": [\"BMW\", \"Opel\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/listOffers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"listOffers"
+					]
+				},
+				"description": "List all offers by portfolio and multiple makes"
+			},
+			"response": []
+		},
+		{
+			"name": "List All Offers by Pricing",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"priceStart\": 100,\n\t\"priceEnd\": 290\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/listOffers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"listOffers"
+					]
+				},
+				"description": "Lists all offers by given pricing range"
+			},
+			"response": []
+		},
+		{
+			"name": "List All Offers by Portfolio and Pricing",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"priceStart\": 100,\n\t\"priceEnd\": 290,\n\t\"portfolio\": \"0001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/listOffers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"listOffers"
+					]
+				},
+				"description": "Lists all offers by given portfolio and pricing range"
+			},
+			"response": []
+		},
+		{
+			"name": "List All Offers by Portfolio and Single Make and Pricing",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"priceStart\": 100,\n\t\"priceEnd\": 290,\n\t\"portfolio\": \"0001\",\n\t\"make\": [\"Opel\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/listOffers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"listOffers"
+					]
+				},
+				"description": "Lists all offers by given portfolio and single make and pricing range"
+			},
+			"response": []
+		},
+		{
+			"name": "List All Offers by Portfolio and Multiple Make and Pricing",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"priceStart\": 100,\n\t\"priceEnd\": 290,\n\t\"portfolio\": \"0001\",\n\t\"make\": [\"Opel\", \"BMW\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/listOffers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"listOffers"
+					]
+				},
+				"description": "Lists all offers by portfolio and multiple make and princing range "
+			},
+			"response": []
+		},
+		{
+			"name": "List All Offers by Single Make",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"make\": [\"Opel\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/listOffers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"listOffers"
+					]
+				},
+				"description": "Lists all offers by given single make "
+			},
+			"response": []
+		},
+		{
+			"name": "List All Offers by Multiple Make",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"make\": [\"Opel\", \"BMW\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/listOffers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"listOffers"
+					]
+				},
+				"description": "Lists all offers by multiple makes."
+			},
+			"response": []
+		},
+		{
+			"name": "Detail of given Id ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/details/115",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"details",
+						"115"
+					]
+				},
+				"description": "Gets details of given Id "
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
