@@ -12,9 +12,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 describe('AppController', () => {
   let app: TestingModule;
 
-  beforeAll(async () => {
-
-
+  beforeAll(async (done) => {
+    if (process.env.DB_ADAPTER == 'mongodb') {
+      jest.setTimeout(30000);
+    }
     app = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppService],
@@ -35,6 +36,7 @@ describe('AppController', () => {
     }
     dataService.setAdapter(dataAdapter);
     await dataService.setData();
+    done();
   });
 
   describe('listOffers', () => {
