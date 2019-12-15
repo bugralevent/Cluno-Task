@@ -42,7 +42,8 @@ describe('AppController', () => {
       const appController = app.get<AppController>(AppController);
       const request = new ListRequest();
       const response = await appController.listOffers(request);
-      for (let res of response) {
+      expect(response.success).toBe(true);
+      for (let res of response.data) {
         expect(res.visible).toBe(true);
       }
       done();
@@ -53,7 +54,8 @@ describe('AppController', () => {
       const request = new ListRequest();
       request.portfolio = "0001";
       const response = await appController.listOffers(request);
-      for (let res of response) {
+      expect(response.success).toBe(true);
+      for (let res of response.data) {
         expect(res.visible).toBe(true);
         expect(res.portfolio).toBe("0001");
       }
@@ -66,7 +68,8 @@ describe('AppController', () => {
       request.priceStart = 100;
       request.priceEnd = 290;
       const response = await appController.listOffers(request);
-      for (let res of response) {
+      expect(response.success).toBe(true);
+      for (let res of response.data) {
         expect(res.visible).toBe(true)
         expect(res.pricing.price).toBeGreaterThanOrEqual(100);
         expect(res.pricing.price).toBeLessThanOrEqual(290);
@@ -79,7 +82,8 @@ describe('AppController', () => {
       const request = new ListRequest();
       request.make = ["Opel", "Peugeot"];
       const response = await appController.listOffers(request);
-      for (let res of response) {
+      expect(response.success).toBe(true);
+      for (let res of response.data) {
         expect(res.visible).toBe(true)
         expect(res.car.make).toMatch(/^Opel|Peugeot$/);
       }
@@ -94,7 +98,8 @@ describe('AppController', () => {
       request.priceEnd = 290;
       request.portfolio = "0001";
       const response = await appController.listOffers(request);
-      for (let res of response) {
+      expect(response.success).toBe(true);
+      for (let res of response.data) {
         expect(res.visible).toBe(true);
         expect(res.car.make).toMatch(/^Opel|Peugeot$/);
         expect(res.pricing.price).toBeGreaterThanOrEqual(100);
@@ -109,7 +114,8 @@ describe('AppController', () => {
       const appController = app.get<AppController>(AppController);
       const id = "115";
       const response = await appController.details(id);
-      expect(response.visible).toBe(true);
+      expect(response.success).toBe(true);
+      expect(response.data.visible).toBe(true);
       done();
     });
   });
