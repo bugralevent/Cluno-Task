@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { IAdapter } from "../Interfaces/IAdapter";
-import { ParsedItem, ClunoParsed } from "../DTOs/Parsed-Cluno-DTO";
+import { ParsedItem, ClunoParsed, ResItem } from "../DTOs/Parsed-Cluno-DTO";
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -42,13 +42,28 @@ export class MongoDBDataAdapterService implements IAdapter {
      * @param priceEnd Ending price, lower then equals to filter. priceStart Parameter is Required !
      * @returns { Promise<Array<ParsedItem>> }
      */
-    public async filter(portfolio?: string, make?: string[], priceStart?: number, priceEnd?: number): Promise<Array<ParsedItem>> {
+    public async filter(portfolio?: string, make?: string[], priceStart?: number, priceEnd?: number, limit?: number): Promise<Array<ResItem>> {
         let NewQuery = { visible: true };
-        if (make) if(make.length > 0) NewQuery["car.make.$in"] = make;
+        if (make) if (make.length > 0) NewQuery["car.make.$in"] = make;
         if (portfolio) NewQuery["portfolio"] = portfolio;
         if (priceEnd != null && priceStart != null) NewQuery['pricing.price'] = { $gte: priceStart, $lte: priceEnd };
+        let query: any = [{ $match: NewQuery }];
+        if (limit) {
+            query.push({ $limit: limit });
+        }
+        query.push({
+            $project: {
+                teaser: 1,
+                detailUrl: 1,
+                id: 1,
+                labels: 1,
+                "price": "$pricing.price",
+                _id: 0
+            }
+        });
+        query.push({ $sort: { 'pricing.price': -1 } });
         try {
-            return await this.offersModel.aggregate([{$match: NewQuery}, { $sort: { 'pricing.price': -1 } }]).exec();
+            return await this.offersModel.aggregate(query).exec();
         } catch (e) {
             throw e;
         }

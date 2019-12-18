@@ -21,6 +21,15 @@ export interface ParsedItem {
     estimatedDeliveryTime : string | undefined;
 }
 
+export interface ResItem {
+    id: string;
+    price: number;
+    labels: ParsedLabel[];
+    teaser: ParsedTeaser;
+    detailUrl: string;
+
+};
+
 export interface ParsedCar {
     equipmentDetails: ParsedLabel[];
     fueltype:         string;

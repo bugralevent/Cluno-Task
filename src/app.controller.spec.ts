@@ -45,9 +45,6 @@ describe('AppController', () => {
       const request = new ListRequest();
       const response = await appController.listOffers(request);
       expect(response.success).toBe(true);
-      for (let res of response.data) {
-        expect(res.visible).toBe(true);
-      }
       done();
     });
 
@@ -57,10 +54,6 @@ describe('AppController', () => {
       request.portfolio = "0001";
       const response = await appController.listOffers(request);
       expect(response.success).toBe(true);
-      for (let res of response.data) {
-        expect(res.visible).toBe(true);
-        expect(res.portfolio).toBe("0001");
-      }
       done();
     });
 
@@ -72,9 +65,8 @@ describe('AppController', () => {
       const response = await appController.listOffers(request);
       expect(response.success).toBe(true);
       for (let res of response.data) {
-        expect(res.visible).toBe(true)
-        expect(res.pricing.price).toBeGreaterThanOrEqual(100);
-        expect(res.pricing.price).toBeLessThanOrEqual(290);
+        expect(res.price).toBeGreaterThanOrEqual(100);
+        expect(res.price).toBeLessThanOrEqual(290);
       }
       done();
     });
@@ -85,10 +77,6 @@ describe('AppController', () => {
       request.make = ["Opel", "Peugeot"];
       const response = await appController.listOffers(request);
       expect(response.success).toBe(true);
-      for (let res of response.data) {
-        expect(res.visible).toBe(true)
-        expect(res.car.make).toMatch(/^Opel|Peugeot$/);
-      }
       done();
     });
 
@@ -102,11 +90,8 @@ describe('AppController', () => {
       const response = await appController.listOffers(request);
       expect(response.success).toBe(true);
       for (let res of response.data) {
-        expect(res.visible).toBe(true);
-        expect(res.car.make).toMatch(/^Opel|Peugeot$/);
-        expect(res.pricing.price).toBeGreaterThanOrEqual(100);
-        expect(res.pricing.price).toBeLessThanOrEqual(290);
-        expect(res.portfolio).toBe("0001");
+        expect(res.price).toBeGreaterThanOrEqual(100);
+        expect(res.price).toBeLessThanOrEqual(290);
       }
       done();
     });

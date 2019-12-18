@@ -3,4 +3,5 @@ export class ListRequest {
     make?: string[];
     priceStart?: number;
     priceEnd?: number;
+    limit?: number
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ClunoNotParsed, Item } from './DTOs/Cluno-DTO';
-import { ClunoParsed, ParsedItem } from './DTOs/Parsed-Cluno-DTO';
+import { ClunoParsed, ParsedItem, ResItem } from './DTOs/Parsed-Cluno-DTO';
 import data from './DTOs/dynamodb.export.json';
 import { ParserService } from './Parser/parser.service';
 import { IAdapter } from './Interfaces/IAdapter';
@@ -56,8 +56,8 @@ export class DataService {
      * @param priceEnd Ending price
      * @returns { Promise<Array<ParsedItem>> }
      */
-    public async filterData(portfolio?: string, make?: string[], priceStart?: number, priceEnd?: number): Promise<Array<ParsedItem>> {
-        return await this.dataAdapter.filter(portfolio, make, priceStart, priceEnd);
+    public async filterData(portfolio?: string, make?: string[], priceStart?: number, priceEnd?: number, limit?: number): Promise<Array<ResItem>> {
+        return await this.dataAdapter.filter(portfolio, make, priceStart, priceEnd, limit);
     }
     /**
      * filterOne

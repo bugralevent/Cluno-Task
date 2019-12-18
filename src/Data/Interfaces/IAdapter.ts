@@ -1,8 +1,8 @@
-import { ParsedItem } from "../DTOs/Parsed-Cluno-DTO";
+import { ParsedItem, ResItem } from "../DTOs/Parsed-Cluno-DTO";
 
 export interface IAdapter {
     onElementReceived(parsedItem: ParsedItem): Promise<void>;
     initialize(count: number, scannedCount: number): Promise<void>;
-    filter(portfolio?: string, make?: string[], priceStart?: number, priceEnd?: number): Promise<Array<ParsedItem>>;
+    filter(portfolio?: string, make?: string[], priceStart?: number, priceEnd?: number, limit?: number): Promise<Array<ResItem>>;
     filterOne(id: string): Promise<ParsedItem>;
 };

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { IAdapter } from "../Interfaces/IAdapter";
-import { ParsedItem, ClunoParsed } from "../DTOs/Parsed-Cluno-DTO";
+import { ParsedItem, ClunoParsed, ResItem } from "../DTOs/Parsed-Cluno-DTO";
 
 @Injectable()
 export class InMemoryDataAdapterService implements IAdapter {
@@ -80,12 +80,15 @@ export class InMemoryDataAdapterService implements IAdapter {
      * @description Fetch data and filter it.
      * @returns { Promise<Array<ParsedItem>> }
      */
-    public async filter(portfolio?: string, make?: string[], priceStart?: number, priceEnd?: number): Promise<Array<ParsedItem>> {
+    public async filter(portfolio?: string, make?: string[], priceStart?: number, priceEnd?: number, limit?: number): Promise<Array<ResItem>> {
         let dataToFilter = this.indexDecision(portfolio, make);
         if (priceEnd != null && priceStart != null) {
-            dataToFilter = dataToFilter.filter((item: ParsedItem) => {
-                return item.pricing.price >= priceStart && item.pricing.price <= priceEnd;
+            dataToFilter = dataToFilter.filter((item: ResItem) => {
+                return item.price >= priceStart && item.price <= priceEnd;
             });
+        }
+        if(limit){
+            return dataToFilter.slice(0, limit);
         }
         return dataToFilter;
     }
@@ -97,7 +100,7 @@ export class InMemoryDataAdapterService implements IAdapter {
      * @param make Make of the car
      * @returns { Array<ParsedItem> }
      */
-    private indexDecision(portfolio?: string, make?: string[]): Array<ParsedItem> {
+    private indexDecision(portfolio?: string, make?: string[]): Array<ResItem> {
         let dataToFilter: Array<ParsedItem> = this.IndexedVisibleOffers.Items;
         let indexKey = "";
         if (portfolio != null) {
@@ -125,7 +128,15 @@ export class InMemoryDataAdapterService implements IAdapter {
             }
         }
 
-        return dataToFilter;
+        return dataToFilter.map((data: ParsedItem) : ResItem => {
+            return {
+                id: data.id,
+                teaser: data.teaser,
+                detailUrl: data.detailUrl,
+                labels: data.labels,
+                price: data.pricing.price
+            };
+        });
     }
 
     /**

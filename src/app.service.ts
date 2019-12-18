@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataService } from './Data/data.service';
-import { ParsedItem } from './Data/DTOs/Parsed-Cluno-DTO';
+import { ParsedItem, ResItem } from './Data/DTOs/Parsed-Cluno-DTO';
 
 @Injectable()
 export class AppService {
@@ -11,8 +11,8 @@ export class AppService {
 
   }
 
-  public async getListOfOffers(portfolio?: string, make?: string[], priceStart?: number, priceEnd?: number): Promise<Array<ParsedItem>> {
-    return await this.dataService.filterData(portfolio, make, priceStart, priceEnd);
+  public async getListOfOffers(portfolio?: string, make?: string[], priceStart?: number, priceEnd?: number, limit?: number): Promise<Array<ResItem>> {
+    return await this.dataService.filterData(portfolio, make, priceStart, priceEnd, limit);
   }
 
   public async offerDetail(id: string): Promise<ParsedItem> {
