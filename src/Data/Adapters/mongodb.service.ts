@@ -29,7 +29,7 @@ export class MongoDBDataAdapterService implements IAdapter {
      * @param parsedItem Parsed CLuno Item
      * @returns { Promise<void> }
      */
-    public async onElementReceived(parsedItem: ParsedItem): Promise<void> {
+    public async onElementReceived(parsedItem: ParsedItem, parsedResItem: ResItem): Promise<void> {
         const CreateData = new this.offersModel(parsedItem);
         await CreateData.save();
     }

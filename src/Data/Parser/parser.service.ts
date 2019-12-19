@@ -1,9 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { Item, BookableOptionsL, LabelsL, ImagesL } from '../DTOs/Cluno-DTO';
-import { ParsedPricing, ParsedItem, ParsedTeaser, ParsedConditions, ParsedCar, ParsedEnvironment } from '../DTOs/Parsed-Cluno-DTO';
+import { ParsedPricing, ParsedItem, ParsedTeaser, ParsedConditions, ParsedCar, ParsedEnvironment, ResItem } from '../DTOs/Parsed-Cluno-DTO';
 
 @Injectable()
 export class ParserService {
+    ParseResItem(item: ParsedItem): ResItem {
+        return {
+            id: item.id,
+            teaser: item.teaser,
+            detailUrl: item.detailUrl,
+            labels: item.labels,
+            price: item.pricing.price
+        };
+    }
     ParsePricing(item: Item): ParsedPricing {
         return {
             startingFee: Number(item.pricing.M.startingFee.N),

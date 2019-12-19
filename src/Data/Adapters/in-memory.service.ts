@@ -11,9 +11,10 @@ export class InMemoryDataAdapterService implements IAdapter {
      */
     constructor() { }
     parsedData: ClunoParsed;
-    OnlyVisibleKeys: Map<String, Boolean> = new Map<String, Boolean>();
-    Indexes: Map<String, Array<ParsedItem>> = new Map<String, Array<ParsedItem>>();
-    IndexedVisibleOffers: ClunoParsed;
+    OnlyVisibleKeys: Map<string, boolean> = new Map<string, boolean>();
+    Indexes: Map<string, Array<ParsedItem>> = new Map<string, Array<ParsedItem>>();
+    OfferIndexes: Map<string, Array<ResItem>> = new Map<string, Array<ResItem>>();
+    IndexedVisibleOffers: Array<ResItem> = new Array<ResItem>();
 
     /**
      * initialize
@@ -29,13 +30,6 @@ export class InMemoryDataAdapterService implements IAdapter {
             ScannedCount: scannedCount,
             ConsumedCapacity: null
         };
-
-        this.IndexedVisibleOffers = {
-            Items: [],
-            Count: 0,
-            ScannedCount: 0,
-            ConsumedCapacity: null
-        }
     }
     /**
      * onElementReceived
@@ -43,29 +37,15 @@ export class InMemoryDataAdapterService implements IAdapter {
      * @param parsedItem Parsed CLuno Item
      * @returns { Promise<void> }
      */
-    public async onElementReceived(parsedItem: ParsedItem): Promise<void> {
+    public async onElementReceived(parsedItem: ParsedItem, parsedResItem: ResItem): Promise<void> {
         if (parsedItem.visible) {
-            this.IndexedVisibleOffers.Items.push(parsedItem);
+            this.IndexedVisibleOffers.push(parsedResItem);
             this.OnlyVisibleKeys[parsedItem.id] = true;
-            //create id index if not exists
-            if (!this.Indexes[this.idIndex(parsedItem.id)]) {
-                this.Indexes[this.idIndex(parsedItem.id)] = [];
-            }
-            //create portfolio index if not exists
-            if (!this.Indexes[this.portfolioIndex(parsedItem.portfolio)]) {
-                this.Indexes[this.portfolioIndex(parsedItem.portfolio)] = [];
-            }
-            //create portfolio index if not exists
-            if (!this.Indexes[this.makeIndex(parsedItem.car.make)]) {
-                this.Indexes[this.makeIndex(parsedItem.car.make)] = [];
-            }
-            if (!this.Indexes[this.portfolioIndex(parsedItem.portfolio) + "|" + this.makeIndex(parsedItem.car.make)]) {
-                this.Indexes[this.portfolioIndex(parsedItem.portfolio) + "|" + this.makeIndex(parsedItem.car.make)] = [];
-            }
-            this.Indexes[this.portfolioIndex(parsedItem.portfolio)].push(parsedItem);
-            this.Indexes[this.makeIndex(parsedItem.car.make)].push(parsedItem);
+            this.indexCreation(parsedItem);
+            this.OfferIndexes[this.portfolioIndex(parsedItem.portfolio)].push(parsedItem);
+            this.OfferIndexes[this.makeIndex(parsedItem.car.make)].push(parsedItem);
             this.Indexes[this.idIndex(parsedItem.id)].push(parsedItem);
-            this.Indexes[this.portfolioIndex(parsedItem.portfolio) + "|" + this.makeIndex(parsedItem.car.make)].push(parsedItem);
+            this.OfferIndexes[this.portfolioIndex(parsedItem.portfolio) + "|" + this.makeIndex(parsedItem.car.make)].push(parsedItem);
         }
 
         this.parsedData.Items.push(parsedItem);
@@ -87,10 +67,32 @@ export class InMemoryDataAdapterService implements IAdapter {
                 return item.price >= priceStart && item.price <= priceEnd;
             });
         }
-        if(limit){
+        if (limit) {
             return dataToFilter.slice(0, limit);
         }
         return dataToFilter;
+    }
+
+    /**
+     * inndexCreation
+     * @description creates indexes if not exists by given parsed cluno item.
+     * @param parsedItem Parsed CLuno Item
+     */
+    private indexCreation(parsedItem: ParsedItem) {
+        if (!this.Indexes[this.idIndex(parsedItem.id)]) {
+            this.Indexes[this.idIndex(parsedItem.id)] = [];
+        }
+        //create portfolio index if not exists
+        if (!this.OfferIndexes[this.portfolioIndex(parsedItem.portfolio)]) {
+            this.OfferIndexes[this.portfolioIndex(parsedItem.portfolio)] = [];
+        }
+        //create portfolio index if not exists
+        if (!this.OfferIndexes[this.makeIndex(parsedItem.car.make)]) {
+            this.OfferIndexes[this.makeIndex(parsedItem.car.make)] = [];
+        }
+        if (!this.OfferIndexes[this.portfolioIndex(parsedItem.portfolio) + "|" + this.makeIndex(parsedItem.car.make)]) {
+            this.OfferIndexes[this.portfolioIndex(parsedItem.portfolio) + "|" + this.makeIndex(parsedItem.car.make)] = [];
+        }
     }
 
     /**
@@ -98,16 +100,16 @@ export class InMemoryDataAdapterService implements IAdapter {
      * @description index desicion of the given parameters and returns indexed items.
      * @param portfolio Portfolio of the item
      * @param make Make of the car
-     * @returns { Array<ParsedItem> }
+     * @returns { Array<ResItem> }
      */
     private indexDecision(portfolio?: string, make?: string[]): Array<ResItem> {
-        let dataToFilter: Array<ParsedItem> = this.IndexedVisibleOffers.Items;
+        let dataToFilter: Array<ResItem> = this.IndexedVisibleOffers;
         let indexKey = "";
         if (portfolio != null) {
             indexKey = this.portfolioIndex(portfolio);
             if (make == null) {
-                dataToFilter = this.Indexes[indexKey];
-            }else{
+                dataToFilter = this.OfferIndexes[indexKey];
+            } else {
                 indexKey += "|";
             }
         }
@@ -115,28 +117,20 @@ export class InMemoryDataAdapterService implements IAdapter {
         if (make != null) {
             if (make.length == 1) {
                 indexKey += this.makeIndex(make[0]);
-                let tempData = this.Indexes[indexKey];
+                let tempData = this.OfferIndexes[indexKey];
                 dataToFilter = tempData.length < dataToFilter.length ? tempData : dataToFilter;
             } else if (make.length > 1) {
-                let data: Array<ParsedItem> = [];
+                let data: Array<ResItem> = [];
                 for (let m of make) {
-                    data = data.concat(this.Indexes[indexKey + this.makeIndex(m)]);
+                    data = data.concat(this.OfferIndexes[indexKey + this.makeIndex(m)]);
                 }
                 // if there are more then 1 make then we have to sort pricings again...
-                data = data.sort((a: ParsedItem, b: ParsedItem) => a.pricing.price - b.pricing.price);
+                data = data.sort((a: ResItem, b: ResItem) => a.price - b.price);
                 dataToFilter = data;
             }
         }
 
-        return dataToFilter.map((data: ParsedItem) : ResItem => {
-            return {
-                id: data.id,
-                teaser: data.teaser,
-                detailUrl: data.detailUrl,
-                labels: data.labels,
-                price: data.pricing.price
-            };
-        });
+        return dataToFilter;
     }
 
     /**

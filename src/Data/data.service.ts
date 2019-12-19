@@ -44,8 +44,9 @@ export class DataService {
         //parse objects
         for (let item of this.notParsedData.Items) {
             let parsedItem: ParsedItem = this.parserService.ParseItem(item);
+            let parsedResItem: ResItem = this.parserService.ParseResItem(parsedItem);
             //send the parsed object to data adapter.
-            await this.dataAdapter.onElementReceived(parsedItem);
+            await this.dataAdapter.onElementReceived(parsedItem, parsedResItem);
         }
     }
     /**
